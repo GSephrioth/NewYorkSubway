@@ -5,22 +5,22 @@ package WeightedGraph;
  * Contains: Weight, Vertex
  * Created by cxz on 2016/10/2.
  */
-class Edge {
-    private int weight;
-    private Vertex endVertex;
-    private Vertex startVertex;
+public class Edge {
+    protected int weight;
+    protected Vertex endVertex;
+    protected Vertex startVertex;
 
-    Edge() {
+    protected Edge() {
         this.weight = Integer.MAX_VALUE;
-        this.startVertex = new Vertex("");
-        this.endVertex = new Vertex("");
+        this.startVertex = null;
+        this.endVertex = null;
     }
-    Edge(String startVertex, String endVertex, int weight) {
+    protected Edge(String startVertex, String endVertex, int weight) {
         this.weight = weight;
         this.startVertex = new Vertex(startVertex);
         this.endVertex = new Vertex(endVertex);
     }
-    Edge(Vertex startVertex, Vertex endVertex, int weight) {
+    protected Edge(Vertex startVertex, Vertex endVertex, int weight) {
         this.startVertex = startVertex;
         this.endVertex = endVertex;
         this.weight = weight;

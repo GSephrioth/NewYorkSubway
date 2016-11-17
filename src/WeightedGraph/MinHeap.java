@@ -13,7 +13,7 @@ import java.util.List;
 public class MinHeap {
     private List<Edge> heap;
 
-    MinHeap() {
+    public MinHeap() {
         this.heap = new ArrayList<>();
     }
 
