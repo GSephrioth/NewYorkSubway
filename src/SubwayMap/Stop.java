@@ -18,6 +18,9 @@ public class Stop extends WeightedGraph.Vertex {
         this.station = station;
     }
 
+    public String getId() {
+        return super.getVertexName();
+    }
     public String getName() {
         return name;
     }

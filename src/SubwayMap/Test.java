@@ -36,6 +36,8 @@ public class Test {
         // read roads for walk from 'transfers'
 
 
+        //read current roads for trains from 'trips' and 'stop_times'
+
         DB.Close();
     }
 }

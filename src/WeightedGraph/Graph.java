@@ -13,7 +13,7 @@ import java.util.*;
  * Created by cxz on 2016/10/2.
  */
 public class Graph {
-    private HashMap<Vertex, List<Edge>> graph; // a graph using Vertex as key, and Edge as value
+    protected HashMap<Vertex, List<Edge>> graph; // a graph using Vertex as key, and Edge as value
     /**
      * initialize an empty graph
      * Complexity: constant
