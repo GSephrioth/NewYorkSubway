@@ -19,7 +19,7 @@ public class Stop extends WeightedGraph.Vertex {
     }
 
     public String getId() {
-        return super.getVertexName();
+        return getVertexName();
     }
     public String getName() {
         return name;

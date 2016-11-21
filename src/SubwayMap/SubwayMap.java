@@ -14,39 +14,56 @@ import java.util.*;
  */
 public class SubwayMap extends WeightedGraph.Graph {
 
-    private SubwayMap() {
+    public SubwayMap() {
         super();
         HashMap<String, Stop> vertexSet = new HashMap<>();
-        Stop tempV;
-        List<Edge> tempEdgeList;
-        Edge tempE;
+        Stop tempStop;
+        Road tempRoad;
 
         DBconnection DB = new DBconnection();
         DB.Connect();
         String findStops = "SELECT * FROM stops WHERE stop_id LIKE '%N' OR stop_id LIKE '%S'";
-        String findTransfers;
+
         ResultSet rsFindStops = DB.Query(findStops);
         try {
+            // up all the stops into a set
             while (rsFindStops.next()) {
-                tempV = new Stop(rsFindStops.getString("stop_id"), rsFindStops.getString("stop_name"), rsFindStops.getFloat("stop_lat"), rsFindStops.getFloat("stop_lon"), rsFindStops.getString("parent_station"));
-                vertexSet.put(tempV.getId(), tempV);
+                tempStop = new Stop(rsFindStops.getString("stop_id"), rsFindStops.getString("stop_name"), rsFindStops.getFloat("stop_lat"), rsFindStops.getFloat("stop_lon"), rsFindStops.getString("parent_station"));
+                vertexSet.put(tempStop.getId(), tempStop);
             }
+            // for each stop in the vertexset, find all the roads connected to it, and put into the graph
             for (Map.Entry<String, Stop> i : vertexSet.entrySet()) {
-                Stop currentStop = i.getValue();
-                findTransfers = "SELECT * FROM transfers WHERE from_stop_id = '" + currentStop.getStation() + "'";
-                ResultSet rsFindTransfers = DB.Query(findStops);
-                tempEdgeList = new LinkedList<>();
+
+                Stop fromStop = i.getValue();
+
+                // find walking roads from table: 'transfers'.
+                String findTransfers = "SELECT * FROM transfers WHERE from_stop_id = '" + fromStop.getStation() + "'";
+
+                ResultSet rsFindTransfers = DB.Query(findTransfers);
                 while (rsFindTransfers.next()) {
+                    String toStation = rsFindTransfers.getString("to_stop_id");
+                    if (toStation.equals(fromStop.getStation())) {
+                        if (fromStop.getId().charAt(fromStop.getId().length() - 1) == 'N') {
+                            tempRoad = new Road(fromStop, vertexSet.get(toStation + "S"), rsFindTransfers.getInt("min_transfer_time"), true);
+                            addEdge(tempRoad);
+                        } else {
+                            tempRoad = new Road(fromStop, vertexSet.get(toStation + "N"), rsFindTransfers.getInt("min_transfer_time"), true);
+                            addEdge(tempRoad);
+                        }
+                    } else {
+                        tempRoad = new Road(fromStop, vertexSet.get(toStation + "S"), rsFindTransfers.getInt("min_transfer_time"), true);
+                        addEdge(tempRoad);
+                        tempRoad = new Road(fromStop, vertexSet.get(toStation + "N"), rsFindTransfers.getInt("min_transfer_time"), true);
+                        addEdge(tempRoad);
+                    }
 
-                    rsFindTransfers.getString("from_stop_id");
-                    rsFindTransfers.getString("to_stop_id");
-                    tempE = new Road(, rsFindTransfers.getInt("min_transfer_time"));
                 }
+                // find railway roads from tables: 'stop_times' and 'trips'
+
             }
-
-
         } catch (SQLException sqle) {
             sqle.getErrorCode();
         }
+        DB.getClass();
     }
 }
