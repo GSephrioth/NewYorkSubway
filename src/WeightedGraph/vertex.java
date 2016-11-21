@@ -16,7 +16,7 @@ public class Vertex {
         this.vertexName = nodeName;
     }
 
-    protected String getVertexName() {
+    public String getVertexName() {
         return vertexName;
     }
 

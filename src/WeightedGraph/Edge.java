@@ -53,14 +53,20 @@ public class Edge {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        /**
+         * In this way, if you create an instance 'a' based on any subclass of Edge, and use a.equals(Edge e), you will always get false
+         * if (o == null || getClass() != o.getClass()) return false;
+         *
+         * But in this way, you can create an instance 'a' based on any subclass of Edge, and use a.equals(Edge e)
+         */
+        if (o == null || Edge.class != o.getClass()) return false;
         Edge e = (Edge) o;
         return e.endVertex.equals(endVertex) && e.startVertex.equals(startVertex) && e.weight == weight;
     }
     @Override
     public String toString() {
         String str;
-        str = " (" + this.startVertex + "," + this.endVertex + "," + this.weight + ") ";
+        str = " (" + this.startVertex.getVertexName() + "," + this.endVertex.getVertexName() + "," + this.weight + ") ";
         return str;
     }
 
