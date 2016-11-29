@@ -41,14 +41,14 @@ public class SubwayMap extends WeightedGraph.Graph {
                 Stop fromStop = i.getValue();
 
                 // find walking roads from table: 'transfers'.
-//                String findTransfers = "SELECT * FROM transfers WHERE from_stop_id = '" + fromStop.getId() + "'";
-//
-//                ResultSet rsFindTransfers = DB.Query(findTransfers);
-//                while (rsFindTransfers.next()) {
-//                    String toStationId = rsFindTransfers.getString("to_stop_id");
-//                    tempRoad = new Road(fromStop, vertexSet.get(toStationId), rsFindTransfers.getInt("min_transfer_time"), true);
-//                    addEdge(tempRoad);
-//                }
+                String findTransfers = "SELECT * FROM transfers WHERE from_stop_id = '" + fromStop.getId() + "'";
+
+                ResultSet rsFindTransfers = DB.Query(findTransfers);
+                while (rsFindTransfers.next()) {
+                    String toStationId = rsFindTransfers.getString("to_stop_id");
+                    tempRoad = new Road(fromStop, vertexSet.get(toStationId), rsFindTransfers.getInt("min_transfer_time"), true);
+                    addEdge(tempRoad);
+                }
                 // find railway roads from tables: 'subway_graph'
                 String findTrip = "SELECT * FROM subway_graph WHERE src_stop_id = '" + fromStop.getId() + "'";
 
