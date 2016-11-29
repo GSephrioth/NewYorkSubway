@@ -2,6 +2,7 @@ package SubwayMap;
 
 import WeightedGraph.*;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -29,9 +30,18 @@ public class Test {
 //        System.out.println(getWeek(now));
 
 // Test SubwayMap
-        SubwayMap swm = new SubwayMap();
-        System.out.println(swm);
 
+        Scanner s = new Scanner(System.in);
+        SubwayMap swm = new SubwayMap();
+//        System.out.println(swm);
+        System.out.println("Please Input a Station Name:");
+        try {
+            String stationName = s.nextLine();
+            swm.Dijkstra(stationName);
+        }catch (Exception e){
+            System.err.println("Can not find the station!");
+            System.err.println("Please input a valid value ~");
+        }
 // Test DB connection
 //        DBconnection DB = new DBconnection();
 //        DB.Connect();

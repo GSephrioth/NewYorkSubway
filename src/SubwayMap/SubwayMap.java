@@ -25,13 +25,13 @@ public class SubwayMap extends WeightedGraph.Graph {
 
         DBconnection DB = new DBconnection();
         DB.Connect();
-        String findStops = "SELECT * FROM stops WHERE stop_id LIKE '%N' OR stop_id LIKE '%S'";
+        String findStops = "SELECT * FROM stops WHERE stop_id NOT LIKE '%N' AND stop_id NOT LIKE '%S'";
 
         ResultSet rsFindStops = DB.Query(findStops);
         try {
             // up all the stops into a set
             while (rsFindStops.next()) {
-                tempStop = new Stop(rsFindStops.getString("stop_id"), rsFindStops.getString("stop_name"), rsFindStops.getFloat("stop_lat"), rsFindStops.getFloat("stop_lon"), rsFindStops.getString("parent_station"));
+                tempStop = new Stop(rsFindStops.getString("stop_id"), rsFindStops.getString("stop_name"), rsFindStops.getFloat("stop_lat"), rsFindStops.getFloat("stop_lon"));
                 vertexSet.put(tempStop.getId(), tempStop);
             }
             // for each stop in the vertexset, find all the roads connected to it, and put into the graph
@@ -40,29 +40,23 @@ public class SubwayMap extends WeightedGraph.Graph {
                 Stop fromStop = i.getValue();
 
                 // find walking roads from table: 'transfers'.
-                String findTransfers = "SELECT * FROM transfers WHERE from_stop_id = '" + fromStop.getStation() + "'";
+                String findTransfers = "SELECT * FROM transfers WHERE from_stop_id = '" + fromStop.getId() + "'";
 
                 ResultSet rsFindTransfers = DB.Query(findTransfers);
                 while (rsFindTransfers.next()) {
-                    String toStation = rsFindTransfers.getString("to_stop_id");
-                    if (toStation.equals(fromStop.getStation())) {
-                        if (fromStop.getId().charAt(fromStop.getId().length() - 1) == 'N') {
-                            tempRoad = new Road(fromStop, vertexSet.get(toStation + "S"), rsFindTransfers.getInt("min_transfer_time"), true);
-                            addEdge(tempRoad);
-                        } else {
-                            tempRoad = new Road(fromStop, vertexSet.get(toStation + "N"), rsFindTransfers.getInt("min_transfer_time"), true);
-                            addEdge(tempRoad);
-                        }
-                    } else {
-                        tempRoad = new Road(fromStop, vertexSet.get(toStation + "S"), rsFindTransfers.getInt("min_transfer_time"), true);
-                        addEdge(tempRoad);
-                        tempRoad = new Road(fromStop, vertexSet.get(toStation + "N"), rsFindTransfers.getInt("min_transfer_time"), true);
-                        addEdge(tempRoad);
-                    }
+                    String toStationId = rsFindTransfers.getString("to_stop_id");
+                    tempRoad = new Road(fromStop, vertexSet.get(toStationId), rsFindTransfers.getInt("min_transfer_time"), true);
+                    addEdge(tempRoad);
                 }
-                // find railway roads from tables: 'stop_times' and 'trips'
-                String findTrip;
+                // find railway roads from tables: 'subway_graph'
+                String findTrip = "SELECT * FROM subway_graph WHERE src_stop_id = '" + fromStop.getId() + "'";
 
+                ResultSet rsFindTrip = DB.Query(findTrip);
+                while (rsFindTrip.next()) {
+                    String toStationId = rsFindTrip.getString("dest_stop_id");
+                    tempRoad = new Road(fromStop, vertexSet.get(toStationId), rsFindTrip.getInt("duration"), true);
+                    addEdge(tempRoad);
+                }
             }
         } catch (SQLException sqle) {
             sqle.getErrorCode();
@@ -70,18 +64,14 @@ public class SubwayMap extends WeightedGraph.Graph {
         DB.getClass();
     }
 
-    /**
-     * Get which day it is during the week
-     * @param date
-     * @return String SAT SUN or WKD
-     */
-    String getWeek(Date date){
-        String[] result = {"WKD","SAT","SUN"};
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-        String week = sdf.format(date);
-        if(week.equals("Sunday"))return result[2];
-        if(week.equals("Saturday"))return result[1];
-        return result[0];
+    public Map<Vertex, Edge> Dijkstra(String StationName) throws Exception {
+        Stop startStop = null;
+        for (Map.Entry<String, Stop> i : vertexSet.entrySet()){
+            if(i.getValue().getName().equals(StationName)){
+                startStop = i.getValue();
+                break;
+            }
+        }
+        return super.Dijkstra(startStop);
     }
-    /***/
 }

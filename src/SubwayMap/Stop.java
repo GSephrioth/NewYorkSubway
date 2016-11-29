@@ -11,16 +11,12 @@ public class Stop extends WeightedGraph.Vertex {
     private String name;
     private Float latitude;
     private Float longitude;
-    private String station;
-    private Calendar arrivalTime;
 
-    Stop(String id,String name, Float latitude, Float longitude, String station){
+    Stop(String id,String name, Float latitude, Float longitude){
         super(id);
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.station = station;
-        this.arrivalTime = null;
     }
 
     public String getId() {
@@ -44,18 +40,11 @@ public class Stop extends WeightedGraph.Vertex {
     public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
-    public String getStation() {
-        return station;
-    }
-    public void setStation(String station) {
-        this.station = station;
-    }
 
     @Override
     public String toString() {
         String str;
         str =   "Station: " + this.name +", "+
-                "Station_id: " + this.station +", "+
                 "Stop_id: "+super.getVertexName()+", "+
                 "latitude: "+this.latitude+", "+
                 "longitude: "+this.longitude+", ";
@@ -65,7 +54,7 @@ public class Stop extends WeightedGraph.Vertex {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Stop.class != o.getClass()) return false;
         Stop v = (Stop) o;
         return super.getVertexName() != null ? super.getVertexName().equals(v.getVertexName()) : v.getVertexName() == null;
     }

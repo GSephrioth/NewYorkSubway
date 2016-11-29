@@ -300,12 +300,12 @@ public class Graph {
      *      Shortest path from single Vertex to all Vertices
      * Complexity: E * log(V)
      */
-    public Map<Vertex, Integer> Dijkstra(String vertexName) throws Exception {
+    public Map<Vertex, Edge> Dijkstra(String vertexName) throws Exception {
         Vertex v = new Vertex(vertexName);
         return Dijkstra(v);
     }
-    private Map<Vertex, Integer> Dijkstra(Vertex startVertex) throws Exception {
-        Map<Vertex, Integer> result = new HashMap<>();
+    protected Map<Vertex, Edge> Dijkstra(Vertex startVertex) throws Exception {
+        Map<Vertex, Edge> result = new HashMap<>();
         MinHeap minHeap = new MinHeap();
         List<Edge> temp;   // temp store the Edge List of the Current Vertex
         if (graph.isEmpty() || !graph.containsKey(startVertex))
@@ -313,7 +313,7 @@ public class Graph {
         Vertex currentVertex = startVertex;
         Edge currentEdge = new Edge(startVertex, startVertex, 0);
 
-        result.put(startVertex, currentEdge.getWeight());
+        result.put(startVertex, currentEdge);
         /**
          * go through all the Edges to find the minimum Path
          * Complexity: E * log(V)
@@ -342,7 +342,7 @@ public class Graph {
             currentVertex = currentEdge.getEndVertex();
 
             // add the selected edge to the MST
-            result.put(currentVertex, currentEdge.getWeight());
+            result.put(currentVertex, currentEdge);
         }
         return result;
     }

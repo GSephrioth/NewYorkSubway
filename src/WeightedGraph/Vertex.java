@@ -16,7 +16,7 @@ public class Vertex {
         this.vertexName = nodeName;
     }
 
-    public String getVertexName() {
+    protected String getVertexName() {
         return vertexName;
     }
 
@@ -37,7 +37,7 @@ public class Vertex {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || Vertex.class != o.getClass()) return false;
         Vertex v = (Vertex) o;
         return vertexName != null ? vertexName.equals(v.getVertexName()) : v.getVertexName() == null;
     }
