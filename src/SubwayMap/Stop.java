@@ -1,5 +1,8 @@
 package SubwayMap;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Stops where the train actually pick and drop passengers
  * Created by cxz on 2016/11/16.
@@ -9,6 +12,7 @@ public class Stop extends WeightedGraph.Vertex {
     private Float latitude;
     private Float longitude;
     private String station;
+    private Calendar arrivalTime;
 
     Stop(String id,String name, Float latitude, Float longitude, String station){
         super(id);
@@ -16,6 +20,7 @@ public class Stop extends WeightedGraph.Vertex {
         this.latitude = latitude;
         this.longitude = longitude;
         this.station = station;
+        this.arrivalTime = null;
     }
 
     public String getId() {

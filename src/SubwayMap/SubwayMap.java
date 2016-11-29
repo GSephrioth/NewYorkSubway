@@ -5,6 +5,7 @@ import WeightedGraph.Vertex;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -13,12 +14,14 @@ import java.util.*;
  * Created by cxz on 2016/11/16.
  */
 public class SubwayMap extends WeightedGraph.Graph {
+    HashMap<String, Stop> vertexSet = new HashMap<>();
+    TimeZone timeZone = TimeZone.getTimeZone("US/Eastern");
 
-    public SubwayMap() {
+    public SubwayMap(){
         super();
-        HashMap<String, Stop> vertexSet = new HashMap<>();
         Stop tempStop;
         Road tempRoad;
+        Calendar cal = Calendar.getInstance(timeZone);
 
         DBconnection DB = new DBconnection();
         DB.Connect();
@@ -56,9 +59,9 @@ public class SubwayMap extends WeightedGraph.Graph {
                         tempRoad = new Road(fromStop, vertexSet.get(toStation + "N"), rsFindTransfers.getInt("min_transfer_time"), true);
                         addEdge(tempRoad);
                     }
-
                 }
                 // find railway roads from tables: 'stop_times' and 'trips'
+                String findTrip;
 
             }
         } catch (SQLException sqle) {
@@ -66,4 +69,19 @@ public class SubwayMap extends WeightedGraph.Graph {
         }
         DB.getClass();
     }
+
+    /**
+     * Get which day it is during the week
+     * @param date
+     * @return String SAT SUN or WKD
+     */
+    String getWeek(Date date){
+        String[] result = {"WKD","SAT","SUN"};
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        String week = sdf.format(date);
+        if(week.equals("Sunday"))return result[2];
+        if(week.equals("Saturday"))return result[1];
+        return result[0];
+    }
+    /***/
 }
