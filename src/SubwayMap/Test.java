@@ -34,10 +34,14 @@ public class Test {
         Scanner s = new Scanner(System.in);
         SubwayMap swm = new SubwayMap();
 //        System.out.println(swm);
-        System.out.println("Please Input a Station Name:");
+        List<Stop> stopList;
         try {
+            System.out.println("Please Input Start Station Name:");
             String stationName = s.nextLine();
-            swm.Dijkstra(stationName);
+            System.out.println("Please Input End Station Name:");
+            String endStationName = s.nextLine();
+            stopList = swm.Dijkstra(stationName,endStationName);
+            System.out.println(stopList);
         }catch (Exception e){
             System.err.println("Can not find the station!");
             System.err.println("Please input a valid value ~");

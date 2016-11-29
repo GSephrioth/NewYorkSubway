@@ -16,4 +16,6 @@ public class Road extends WeightedGraph.Edge {
         super(from,to,time);
         this.walk = walk;
     }
+    public Stop getStartStation(){return (Stop)super.getStartVertex();}
+    public Stop getEndStation(){return (Stop)super.getEndVertex();}
 }

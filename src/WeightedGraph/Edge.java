@@ -26,13 +26,13 @@ public class Edge {
         this.weight = weight;
     }
 
-    int getWeight() {
+    public int getWeight() {
         return weight;
     }
-    Vertex getStartVertex() {
+    public Vertex getStartVertex() {
         return startVertex;
     }
-    Vertex getEndVertex() {
+    public Vertex getEndVertex() {
         return endVertex;
     }
 

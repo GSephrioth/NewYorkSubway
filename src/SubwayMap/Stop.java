@@ -44,10 +44,8 @@ public class Stop extends WeightedGraph.Vertex {
     @Override
     public String toString() {
         String str;
-        str =   "Station: " + this.name +", "+
-                "Stop_id: "+super.getVertexName()+", "+
-                "latitude: "+this.latitude+", "+
-                "longitude: "+this.longitude+", ";
+        str =   "[Station: " + this.name +", "+
+                "Stop_id: "+super.getVertexName()+"]";
         return str;
     }
 
