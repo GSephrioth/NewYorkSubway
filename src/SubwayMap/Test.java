@@ -40,8 +40,13 @@ public class Test {
             String stationName = s.nextLine();
             System.out.println("Please Input End Station Name:");
             String endStationName = s.nextLine();
+
             stopList = swm.Dijkstra(stationName,endStationName);
-            System.out.println(stopList);
+
+            System.out.println(System.getProperty("line.separator")+"Short route will be: "+System.getProperty("line.separator"));
+
+            for(Stop stop:stopList)
+                System.out.println(stop.getName());
         }catch (Exception e){
             System.err.println("Can not find the station!");
             System.err.println("Please input a valid value ~");

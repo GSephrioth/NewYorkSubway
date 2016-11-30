@@ -90,7 +90,7 @@ public class SubwayMap extends WeightedGraph.Graph {
         Road currentEdge = new Road(startStation, startStation, 0,false);
 
         result.put(startStation, currentEdge);
-        /**
+        /*
          * go through all the Edges to find the minimum Path
          * Complexity: E * log(V)
          * */
@@ -98,7 +98,7 @@ public class SubwayMap extends WeightedGraph.Graph {
 
             temp = graph.get(currentVertex);
             if (temp == null || temp.isEmpty()) break;
-            /**
+            /*
              * Complexity: log(V) * number of Edges Linked to Current Vertex
              * */
             for (Edge e : temp) {
@@ -107,7 +107,7 @@ public class SubwayMap extends WeightedGraph.Graph {
                     Edge t = new Road((Stop)currentEdge.getStartVertex(), (Stop)e.getEndVertex(), currentEdge.getWeight() + e.getWeight(),false);
                     // keep the road record
                     Edge record = new Road((Stop)e.getStartVertex(), (Stop)e.getEndVertex(), currentEdge.getWeight() + e.getWeight(),false);
-                    /**
+                    /*
                      * Replace the element having the same endVertex or add the element
                      * Complexity: log(V-1)
                      */
@@ -128,8 +128,8 @@ public class SubwayMap extends WeightedGraph.Graph {
             if(currentVertex.equals(endStation))break;
         }
 
-
-        Stop tempStop = resultRoads.get(resultRoads.size()-1).getStartStation();
+        // back track the resultRoads to get a route from end to start
+        Stop tempStop = resultRoads.get(resultRoads.size()-1).getEndStation();
         resultStops.add(tempStop);
         while(!tempStop.equals(startStation)){
             for(Road r: resultRoads){
@@ -140,6 +140,8 @@ public class SubwayMap extends WeightedGraph.Graph {
                 }
             }
         }
+        // reverse the result
+        Collections.reverse(resultStops);
         return resultStops;
     }
 }
