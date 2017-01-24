@@ -1,6 +1,25 @@
 # NewYorkSubway
 Implement a map of New York Subway, in order to find the fastest path between stations
 
+##Running Environment Requirement
+
+Mysql 5.6
+Java Runtime Environment 1.8.101
+
+##Configuration Steps
+
+First, make sure Mysql run on "localhost:3306", and have a user named "root", with password "123456".
+Then, create a database named "newyork_subway".
+Next, import the newyork_subway.sql into it.
+Finally, make sure there are 9 tables:
+"calender","calender_dates","routes","shapes","stops","stop_times","subway_graph","transfers","trips".
+
+##Running Command
+
+java -jar Code.jar
+Insert station names according to instructions.
+(pay attention to Upper and Lower cases)
+
 ##File Structure
 
 |__data  
@@ -12,7 +31,8 @@ Implement a map of New York Subway, in order to find the fastest path between st
 |   |__stop_times.txt   // 535811 records,which describes arrivalTime schedule, contains: trip_id, arrival_time, departure_time, stop_id, stop_sequence  
 |   |__stops.txt        // subway stops,contains:id, name,latitude, longitude, location_type, parent_station  
 |   |__transfers.txt    // transfer times from one station to another, contains: from_stop_id, to_stop_id, min_transfer_time.  
-|   |__trips.txt        // 2000 records, contains: route_id, service_id, trip_id, trip_headsign ? , shape_id  
+|   |__trips.txt        // 2000 records, contains: route_id, service_id, trip_id, trip_headsign ? , shape_id
+|   |__newyork_subway.sql
 |  
 |__src  
     |__Test  
@@ -38,11 +58,5 @@ eg. Station "101" with two stops: "101S","101N".
 ##Data Modification
 
 Deleted empty data in all tables.
-
 Updated some data in 'stop_times', where 'arrival_time' or 'departure_time' is invalid.
-
-
-##Problems
-
-2. Why transfer through same stop also cost arrivalTime?
-3. As we have the "stop_time", what is calender for?
+Created a table "subway_graph" based on current date and time.
